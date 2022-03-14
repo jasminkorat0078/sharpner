@@ -22,7 +22,7 @@ function getdata(e){
       console.log(res);
   }).catch(err =>console.error(err));
 
-    showonscreen(obj);
+    //showonscreen(obj);
 
     //localStorage.setItem(obj.email,JSON.stringify(obj));
     
@@ -39,22 +39,42 @@ function refresh(e){
                 showonscreen(res.data[i]);
             }
         })
-    // for(i=0;i<localStorage.length;i++)
-    // {
-    //     k=localStorage.key(i);
-    //     var getobj = JSON.parse(localStorage.getItem(k));
-    //     const parentnode = document.getElementById("userdetail")
-    //     const childnode = '<li>Username = ' + getobj['name'] + ' , Email id = '+ getobj
-    //     ['email']+'</li>'
-        
-    //     parentnode.innerHTML=parentnode.innerHTML+childnode;
 
-    // }
 }
 
 function showonscreen(user){
     const parentnode = document.getElementById("userdetail")
-    const childnode = `<li id = ${user.email}> Username = ' ${user.name}  , Email id = ' ${user.email}<button id='${user.email}' onclick="dlfn(${user.email})" style="float:center">delete</button></li>`
+    const childnode = `<li id = ${user._id}> Username = ' ${user.name}'  , Email id = ' ${user.email}'<button id='${user._id}' onclick="dlfn('${user._id}')" style="float:center">delete</button></li>`
     //const childnode = '<li id = '+user.email`> Username = ${user.name} , Email id = ${user.email}</li>`
     parentnode.innerHTML = parentnode.innerHTML + childnode;
+    console.log(childnode);
+}
+
+function dlfn(userid){
+    console.log(userid);
+    removeuserfromscreen(userid);
+    console.log("dlfn function called");
+}
+function removeuserfromscreen(userid){
+    console.log("removed");
+    axios.delete(`https://crudcrud.com/api/ddc1dc13e6d04f7aac488adf716bfad8/user/${userid}`
+  ).then(res => {
+      console.log("removed from storage")
+  }).catch(err =>console.error(err));
+    
+    removechildnode(userid);
+
+}
+
+function removechildnode(userid){
+    const parentnode1=document.getElementById("userdetail");
+    const childnodedeleted = document.getElementById(`${userid}`);
+    //parentnode.removeChild(childnode);
+    if(childnodedeleted){
+        parentnode1.removeChild(childnodedeleted);
+
+
+    }
+    console.log(parentnode1);
+  
 }
