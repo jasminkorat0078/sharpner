@@ -26,6 +26,12 @@ function App() {
       amount: 8000,
       location: "srinagar",
     },
+    {
+      title: "shoes.",
+      date: new Date(2022, 2, 30),
+      amount: 1500,
+      location: "rishikesh",
+    },
   ];
 
 
@@ -33,11 +39,8 @@ function App() {
   return (
     <div>
       <h2>Let's get started</h2>
-  
-
-
-
-      <ExpenseItem
+      {expenses.map((exp)=>(<ExpenseItem title={exp.title} amount={exp.amount} date={exp.date} location = {exp.location}/>))}
+      {/* <ExpenseItem
         title={expenses[0].title}
         amount={expenses[0].amount}
         date={expenses[0].date}
@@ -60,7 +63,7 @@ function App() {
         amount={expenses[3].amount}
         date={expenses[3].date}
         location={expenses[3].location}
-      ></ExpenseItem>
+      ></ExpenseItem> */}
     </div>
   );
 }
