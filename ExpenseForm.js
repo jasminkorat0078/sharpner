@@ -7,20 +7,46 @@ const ExpenseForm = () => {
     const [enteredAmount,setEnteredAmount] = useState('');
     const [enteredDate,setEnteredDate] = useState('');
     const [enteredLocation,setEnteredLocation] = useState('');
+    // const [userInput,setUserInput]=useState({
+    //     enteredTitle:'',
+    //     enteredAmount:'',
+    //     enteredDate:'',
+    //     enteredLocation:'',
+    // });
 
     const titleHandler = (event)=>{
         setEnteredTitle(event.target.value);
+        // setUserInput({
+        //     ...userInput,
+        //     enteredTitle: event.target.value,
+        // });
+        // setUserInput((prevState)=>{
+        //     return({...prevState,enteredTitle:event.target.value});
+
+        // });
     }
 
     const amountHandler = (event)=>{
         setEnteredAmount(event.target.value);
+        // setUserInput({
+        //     ...userInput,
+        //     enteredAmount: event.target.value,
+        // });
     }
 
     const dateHandler = (event)=>{
         setEnteredDate(event.target.value);
+        // setUserInput({
+        //     ...userInput,
+        //     enteredDate: event.target.value,
+        // });
     }
     const locationHandler = (event)=>{
         setEnteredLocation(event.target.value);
+        // setUserInput({
+        //     ...userInput,
+        //     enteredLocation: event.target.value,
+        // });
     }
     
   return (
