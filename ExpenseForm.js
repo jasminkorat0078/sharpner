@@ -1,7 +1,7 @@
 import "./ExpenseForm.css";
 import react,{useState} from 'react';
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
 
     const [enteredTitle,setEnteredTitle] = useState('');
     const [enteredAmount,setEnteredAmount] = useState('');
@@ -21,7 +21,14 @@ const ExpenseForm = () => {
             date: new Date(enteredDate),
             location: enteredLocation
         };
-        console.log(expenseData);
+        props.onSaveExpenseData(expenseData);
+
+
+        setEnteredTitle('');
+        setEnteredAmount('');
+        setEnteredDate('');
+        setEnteredLocation('');
+        
 
 
     }
@@ -55,37 +62,38 @@ const ExpenseForm = () => {
         //     enteredDate: event.target.value,
         // });
     }
-    const locationHandler = (event)=>{
-        setEnteredLocation(event.target.value);
-        // setUserInput({
-        //     ...userInput,
-        //     enteredLocation: event.target.value,
-        // });
-    }
+    // const locationHandler = (event)=>{
+    //     setEnteredLocation(event.target.value);
+    //     // setUserInput({
+    //     //     ...userInput,
+    //     //     enteredLocation: event.target.value,
+    //     // });
+    // }
     
   return (
     <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" onChange={titleHandler} />
+          <input type="text" value={enteredTitle} onChange={titleHandler} />
          
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
-          <input type="number" min="0.01" step="0.01" onChange={amountHandler} />
+          <input type="number" value={enteredAmount} min="0.01" step="0.01" onChange={amountHandler} />
         </div>
         <div className="new-expense__control">
           <label>Date</label>
-          <input type="date" min="2019-01-01" max="2023-12-31" onChange={dateHandler} />
+          <input type="date" value={enteredDate} min="2019-01-01" max="2023-12-31" onChange={dateHandler} />
         </div>
-        <div className="new-expense__control">
+        {/* <div className="new-expense__control">
           <label>Location</label>
-          <input type="text"  onChange={locationHandler} />
-        </div>
+          <input type="text" value={enteredLocation}  onChange={locationHandler} />
+        </div> */}
       </div>
       <div className="new-expense__actions">
         <button type="submit">Add Expense</button>
+        <button type="submit" onClick={props.onStop}>Cancel</button>
       </div>
     </form>
   );
