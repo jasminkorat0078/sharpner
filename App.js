@@ -1,70 +1,72 @@
-import ExpenseItem from "./components/ExpenseItem.js";
+import React, { useState, useEffect, useCallback } from 'react';
+
+import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
+import './App.css';
 
 function App() {
-  const expenses = [
-    {
-      title: "car Insuarance",
-      date: new Date(2022, 2, 28),
-      amount: 2000,
-      location: "ahmedabad",
-    },
-    {
-      title: "home loan",
-      date: new Date(2022, 2, 29),
-      amount: 15000,
-      location: "ahmedabad",
-    },
-    {
-      title: "clothes",
-      date: new Date(2022, 2, 30),
-      amount: 5000,
-      location: "mumbai",
-    },
-    {
-      title: "Misc.",
-      date: new Date(2022, 2, 31),
-      amount: 8000,
-      location: "srinagar",
-    },
-    {
-      title: "shoes.",
-      date: new Date(2022, 2, 30),
-      amount: 1500,
-      location: "rishikesh",
-    },
-  ];
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('https://swapi.dev/api/films/');
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
 
+      const data = await response.json();
+
+      const transformedMovies = data.results.map((movieData) => {
+        return {
+          id: movieData.episode_id,
+          title: movieData.title,
+          openingText: movieData.opening_crawl,
+          releaseDate: movieData.release_date,
+        };
+      });
+      setMovies(transformedMovies);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
+
+  function addMovieHandler(movie) {
+    console.log(movie);
+  }
+
+  let content = <p>Found no movies.</p>;
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
 
   return (
-    <div>
-      <h2>Let's get started</h2>
-      {expenses.map((exp)=>(<ExpenseItem title={exp.title} amount={exp.amount} date={exp.date} location = {exp.location}/>))}
-      {/* <ExpenseItem
-        title={expenses[0].title}
-        amount={expenses[0].amount}
-        date={expenses[0].date}
-        location={expenses[0].location}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[1].title}
-        amount={expenses[1].amount}
-        date={expenses[1].date}
-        location={expenses[1].location}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[2].title}
-        amount={expenses[2].amount}
-        date={expenses[2].date}
-        location={expenses[2].location}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[3].title}
-        amount={expenses[3].amount}
-        date={expenses[3].date}
-        location={expenses[3].location}
-      ></ExpenseItem> */}
-    </div>
+    <React.Fragment>
+      <section>
+        <AddMovie onAddMovie={addMovieHandler} />
+      </section>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>{content}</section>
+    </React.Fragment>
   );
 }
 
